@@ -1,0 +1,22 @@
+// protoc --js_out=import_style=commonjs,binary:. company.proto
+
+syntax = "proto3";
+
+package company;
+
+service Company {
+    // rpc GetFeature(Point) returns (Feature) {}
+    // rpc ListFeatures(Rectangle) returns (stream Feature) {}
+    // rpc RecordRoute(stream Point) returns (RouteSummary) {}
+    // rpc RouteChat(stream RouteNode) returns (stream RouteNote) {}
+    rpc GetCompany(CompanyRequest) returns (CompanyResponse) {}
+}
+
+message CompanyRequest {
+    string uen = 1;
+}
+
+message CompanyResponse {
+    string uen = 1;
+    string name = 2;
+}
