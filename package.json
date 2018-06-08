@@ -4,15 +4,27 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "client": "node src/client/client.js",
-    "server": "node src/server/run.js",
-    "generate": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:. --grpc_out=. src/protos/company.proto"
+    "client:js": "node src/js/client/client.js",
+    "client:rust": "(cd src/rust; cargo run --bin client)",
+    "server:js": "node src/js/server/run.js",
+    "server:rust": "(cd src/rust; cargo run --bin server)",
+    "generate:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:. --grpc_out=. src/protos/company.proto",
+    "generate:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/ts-protoc-gen/bin/protoc-gen-ts --ts_out=service=true:. src/protos/company.proto",
+    "generate:all": "yarn generate:js && yarn generate:ts && yarn generate:rust",
+    "generate:rust": "protoc --rust_out=src/rust/protos/src --grpc_out=src/rust/protos/src --plugin=protoc-gen-grpc=`which grpc_rust_plugin` src/protos/company.proto",
+    "install:prereqs:rust": "cargo install protobuf-codegen && cargo install grpcio-compiler",
+    "build:ts:client:web": "tsc"
   },
   "dependencies": {
     "google-protobuf": "^3.5.0",
-    "grpc": "^1.12.2"
+    "grpc": "^1.12.2",
+    "grpc-web-client": "^0.6.2"
   },
   "devDependencies": {
-    "grpc-tools": "^1.6.6"
+    "@types/google-protobuf": "^3.2.7",
+    "@types/node": "^10.3.1",
+    "grpc-tools": "^1.6.6",
+    "ts-protoc-gen": "^0.7.3",
+    "typescript": "^2.9.1"
   }
 }

@@ -1,0 +1,9 @@
+[package]
+name = "protos"
+version = "0.1.0"
+authors = ["Ng Guoyou <ng.guoyou@gmail.com>"]
+
+[dependencies]
+futures = "^0.1.15"
+grpcio = "0.3"
+protobuf = "2.0"

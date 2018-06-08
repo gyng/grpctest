@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noImplicitAny": true,
+    // "outDir": "build/"
+  },
+  "include": ["./src/ts/**/*", "./src/protos/*",],
+  "exclude": ["node_modules"]
+}

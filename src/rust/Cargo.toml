@@ -1,0 +1,17 @@
+[package]
+name = "rust"
+version = "0.1.0"
+authors = ["Ng Guoyou <ng.guoyou@gmail.com>"]
+
+[[bin]]
+name = "client"
+path = "src/client/main.rs"
+
+[[bin]]
+name = "server"
+path = "src/server/main.rs"
+
+[dependencies]
+futures = "^0.1.15"
+grpcio = "0.3"
+protos = { path = "protos" }

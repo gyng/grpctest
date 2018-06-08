@@ -5,7 +5,7 @@ const path = require("path");
 const grpc = require("grpc");
 
 // Dynamic gRPC example, for static example see client
-const PROTO_PATH = path.resolve(path.join(__dirname, "../protos/company.proto"));
+const PROTO_PATH = path.resolve(path.join(__dirname, "../../protos/company.proto"));
 const companyService = grpc.load(PROTO_PATH).company;
 
 const MY_EXPERT_DATABASE = {

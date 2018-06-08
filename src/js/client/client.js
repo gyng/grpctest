@@ -1,6 +1,6 @@
 const grpc = require("grpc");
-const services = require("../protos/company_grpc_pb");
-const messages = require("../protos/company_pb");
+const services = require("../../protos/company_grpc_pb");
+const messages = require("../../protos/company_pb");
 
 const credentials = grpc.credentials.createInsecure();
 const client = new services.CompanyClient("localhost:50051", credentials);
