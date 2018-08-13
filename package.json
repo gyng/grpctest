@@ -5,25 +5,29 @@
   "license": "MIT",
   "scripts": {
     "client:js": "node src/js/client/client.js",
+    "client:ts": "yarn build:ts:client:web && node src/ts/client/web.js",
     "client:rust": "(cd src/rust; cargo run --bin client)",
     "server:js": "node src/js/server/run.js",
     "server:rust": "(cd src/rust; cargo run --bin server)",
-    "generate:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:. --grpc_out=. src/protos/company.proto",
-    "generate:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/ts-protoc-gen/bin/protoc-gen-ts --ts_out=service=true:. src/protos/company.proto",
+    "generate:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:. --grpc_out=. src/protos/event.proto",
+    "generate:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/ts-protoc-gen/bin/protoc-gen-ts --ts_out=service=true:. src/protos/event.proto",
     "generate:all": "yarn generate:js && yarn generate:ts && yarn generate:rust",
-    "generate:rust": "protoc --rust_out=src/rust/protos/src --grpc_out=src/rust/protos/src --plugin=protoc-gen-grpc=`which grpc_rust_plugin` src/protos/company.proto",
+    "generate:rust": "protoc --rust_out=src/rust/protos/src --grpc_out=src/rust/protos/src --plugin=protoc-gen-grpc=`which grpc_rust_plugin` src/protos/event.proto",
     "install:prereqs:rust": "cargo install protobuf-codegen && cargo install grpcio-compiler",
     "build:ts:client:web": "tsc"
   },
   "dependencies": {
-    "google-protobuf": "^3.5.0",
+    "@grpc/proto-loader": "^0.3.0",
+    "google-protobuf": "^3.6.1",
     "grpc": "^1.12.2",
-    "grpc-web-client": "^0.6.2"
+    "grpc-web-client": "^0.6.2",
+    "proto": "^1.0.19"
   },
   "devDependencies": {
     "@types/google-protobuf": "^3.2.7",
     "@types/node": "^10.3.1",
     "grpc-tools": "^1.6.6",
+    "protoc": "^1.0.3",
     "ts-protoc-gen": "^0.7.3",
     "typescript": "^2.9.1"
   }

@@ -4,35 +4,53 @@
 const path = require("path");
 const grpc = require("grpc");
 
+const protoLoader = require("@grpc/proto-loader");
+
+// const googleProtobuf = require("google-protobuf");
+// console.log(googleProtobuf);
+
 // Dynamic gRPC example, for static example see client
-const PROTO_PATH = path.resolve(path.join(__dirname, "../../protos/company.proto"));
-const companyService = grpc.load(PROTO_PATH).company;
+const PROTO_PATH = path.resolve(
+  path.join(__dirname, "../../protos/event.proto")
+);
 
-const MY_EXPERT_DATABASE = {
-  foo: { name: "bar" },
-  bar: { name: "baz" }
-};
+const protoDefinition = protoLoader.loadSync(PROTO_PATH, {});
+const packageDefinition = grpc.loadPackageDefinition(protoDefinition);
 
-function getCompany(call, callback) {
-  console.log(call)
-  const company = MY_EXPERT_DATABASE[call.request.uen];
+const eventService = packageDefinition.event;
 
-  if (company) {
-    const res = { uen: call.request.uen, name: company.name };
-    callback(null, res);
-  } else {
-    callback({
-      message: "unknown UEN",
-      status: grpc.status.NOT_FOUND
-    });
-  }
+const EVENT_LOG = [];
+
+function putEvent(call, callback) {
+  console.log('xxx', call.request.payload)
+
+  EVENT_LOG.push(call.request);
+  console.log("Event log: ", EVENT_LOG);
+  callback(null, {});
+}
+
+function getEventsSince(call, callback) {
+  const since = call.request.id;
+  const events = EVENT_LOG.slice(since, -1).filter(
+    ev => ev.type === call.request.type
+  );
+
+  const response = {
+    etype: "EVENTS_SINCE",
+    events
+  };
+
+  callback(null, response);
 }
 
 function getServer() {
   const server = new grpc.Server();
-  server.addService(companyService.Company.service, {
-    getCompany
+
+  server.addService(eventService.Event.service, {
+    putEvent,
+    getEventsSince
   });
+
   return server;
 }
 

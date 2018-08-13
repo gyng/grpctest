@@ -1,25 +1,31 @@
 const grpc = require("grpc");
-const services = require("../../protos/company_grpc_pb");
-const messages = require("../../protos/company_pb");
-
-const credentials = grpc.credentials.createInsecure();
-const client = new services.CompanyClient("localhost:50051", credentials);
+const services = require("../../protos/event_grpc_pb");
+const messages = require("../../protos/event_pb");
+require("google-protobuf"); // injects into global `proto` object
 
 const responseHandler = (err, res) => {
   if (err) {
     console.error(err);
   } else {
-    console.log(res.toObject());
+    console.log(res);
   }
 };
 
+const credentials = grpc.credentials.createInsecure();
+const eventClient = new services.EventClient("localhost:50051", credentials);
 
-const req = new messages.CompanyRequest();
-req.setUen("foo");
-client.getCompany(req, responseHandler);
+const putEventReq = new messages.PutEventRequest();
+putEventReq.setType("JS_CLIENT_EVENT");
+putEventReq.setPayload(new proto.google.protobuf.Struct({
+  fields: {
+    foo: {
+      string_value: "bar"
+    }
+  }
+}));
+eventClient.putEvent(putEventReq, responseHandler);
 
-req.setUen("bar");
-client.getCompany(req, responseHandler);
-
-req.setUen("baz");
-client.getCompany(req, responseHandler);
+const getEventsReq = new messages.GetEventsSinceRequest();
+getEventsReq.setType("JS_CLIENT_EVENT");
+getEventsReq.setId(0);
+eventClient.getEventsSince(getEventsReq, responseHandler);

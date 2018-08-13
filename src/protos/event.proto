@@ -1,0 +1,31 @@
+// protoc --js_out=import_style=commonjs,binary:. event.proto
+
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+package event;
+
+service Event {
+    rpc PutEvent(PutEventRequest) returns (EventResponse) {}
+    rpc GetEventsSince(GetEventsSinceRequest) returns (GetEventsSinceResponse) {}
+}
+
+message PutEventRequest {
+    string type = 1;
+    google.protobuf.Struct payload = 2;
+}
+
+message EventResponse {}
+
+message GetEventsSinceRequest {
+    string type = 1;
+    int32 id = 2;
+}
+
+// Replace Struct with Any?
+// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#any
+message GetEventsSinceResponse {
+    string type = 1;
+    repeated google.protobuf.Struct events = 2;
+}
