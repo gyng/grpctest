@@ -33,12 +33,12 @@ fn main() {
     my_struct.set_fields(my_values);
 
     req.set_payload(my_struct);
-    let reply = event_client.put_event(&req);
+    let reply = event_client.put_event(&req).unwrap();
     println!("Received: {:?}", reply);
 
     let mut req = event::GetEventsSinceRequest::new();
     req.set_field_type("RUST_CLIENT_EVENT".to_string());
     req.set_id(0);
-    let reply = event_client.get_events_since(&req);
+    let reply = event_client.get_events_since(&req).unwrap();
     println!("Received: {:?}", reply);
 }

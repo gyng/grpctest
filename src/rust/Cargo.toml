@@ -16,3 +16,4 @@ futures = "^0.1.15"
 grpcio = "0.3"
 protos = { path = "protos" }
 protobuf = "*"
+lazy_static = "*"
