@@ -13,13 +13,6 @@ use std::collections::HashMap;
 fn main() {
     let env = Arc::new(grpcio::EnvBuilder::new().build());
     let ch = grpcio::ChannelBuilder::new(env).connect("0.0.0.0:50051");
-    // let client = event_grpc::eventClient::new(ch);
-
-    // let mut req = event::eventRequest::new();
-    // req.set_uen("foo".to_owned());
-    // let reply = client.get_event(&req).expect("failed to get event");
-    // println!("Received: {:?}", reply);
-
 
     let event_client = event_grpc::EventClient::new(ch);
     let mut req = event::PutEventRequest::new();
